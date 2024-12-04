@@ -29,6 +29,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
+    const campaignCollection = client.db("campaignDB").collection("campaigns")
+
+    // app.get("/campaigns", async(req, res));
+
+    app.post("/campaigns", async (req, res) => {
+      const newCampaign = req.body;
+      console.log(newCampaign);
+
+      const result = await campaignCollection.insertOne(newCampaign);
+      res.send(result)
+    });
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
