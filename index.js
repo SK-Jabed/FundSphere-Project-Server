@@ -48,8 +48,6 @@ async function run() {
 
     app.post("/campaigns", async (req, res) => {
       const newCampaign = req.body;
-      console.log(newCampaign);
-
       const result = await campaignCollection.insertOne(newCampaign);
       res.send(result)
     });
