@@ -29,7 +29,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    const campaignCollection = client.db("campaignDB").collection("campaigns")
+    const campaignCollection = client.db("campaignDB").collection("campaigns");
+    const userCollection = client.db("campaignDB").collection("users");
 
     app.get("/campaigns", async (req, res) => {
       const cursor = campaignCollection.find();
@@ -58,6 +59,15 @@ async function run() {
       const result = await campaignCollection.insertOne(newCampaign);
       res.send(result)
     });
+
+
+    // User Related API
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      console.log("Creating New User", user);
+      const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
