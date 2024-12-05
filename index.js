@@ -31,7 +31,20 @@ async function run() {
 
     const campaignCollection = client.db("campaignDB").collection("campaigns")
 
-    // app.get("/campaigns", async(req, res));
+    app.get("/campaigns", async(req, res) => {
+      const cursor = campaignCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/runningCampaigns", async (req, res) => {
+      const currentDate = new Date();
+      const cursor = campaignCollection
+        .find({ deadline: { $gte: currentDate.toISOString() } })
+        .limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     app.post("/campaigns", async (req, res) => {
       const newCampaign = req.body;
