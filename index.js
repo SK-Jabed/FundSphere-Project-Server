@@ -68,9 +68,40 @@ async function run() {
       res.send(result);
     })
 
+    app.get("/myCampaigns", async (req, res) => {
+      const userEmail = req.query.email;
+      const campaigns = await campaignCollection.find({ userEmail }).toArray();
+      res.send(campaigns);
+    });
+
+    app.get("/campaigns/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await campaignCollection.findOne(query);
+      res.send(result);
+    })
+
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    })
+
+    app.delete("/campaigns/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await campaignCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
+      res.send(result);
+    })
+
+    app.patch("/campaigns/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedCampaign = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = { $set: updatedCampaign };
+
+      const result = await campaignCollection.updateOne(filter, updateDoc);
       res.send(result);
     })
 
