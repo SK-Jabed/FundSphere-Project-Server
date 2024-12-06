@@ -80,10 +80,23 @@ async function run() {
       const result = await campaignCollection.findOne(query);
       res.send(result);
     })
+    app.get("/myDonations", async (req, res) => {
+      const email = req.query.email;
+      const donations = await campaignCollection
+        .find({ userEmail: email })
+        .toArray();
+      res.send(donations);
+    })
 
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    })
+
+    app.post("/donations", async (req, res) => {
+      const donationData = req.body;
+      const result = await campaignCollection.insertOne(donationData);
       res.send(result);
     })
 
