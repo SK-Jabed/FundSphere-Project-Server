@@ -31,6 +31,7 @@ async function run() {
 
     const campaignCollection = client.db("campaignDB").collection("campaigns");
     const userCollection = client.db("campaignDB").collection("users");
+    const donationCollection = client.db("campaignDB").collection("donations");
 
     app.get("/campaigns", async (req, res) => {
       const cursor = campaignCollection.find();
@@ -82,7 +83,7 @@ async function run() {
     })
     app.get("/myDonations", async (req, res) => {
       const email = req.query.email;
-      const donations = await campaignCollection
+      const donations = await donationCollection
         .find({ userEmail: email })
         .toArray();
       res.send(donations);
@@ -96,7 +97,7 @@ async function run() {
 
     app.post("/donations", async (req, res) => {
       const donationData = req.body;
-      const result = await campaignCollection.insertOne(donationData);
+      const result = await donationCollection.insertOne(donationData);
       res.send(result);
     })
 
