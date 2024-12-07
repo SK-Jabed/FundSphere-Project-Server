@@ -61,7 +61,6 @@ async function run() {
       res.send(result)
     });
 
-
     // User Related API
     app.get("/users", async (req, res) => {
       const cursor = userCollection.find();
@@ -81,6 +80,7 @@ async function run() {
       const result = await campaignCollection.findOne(query);
       res.send(result);
     })
+    
     app.get("/myDonations", async (req, res) => {
       const email = req.query.email;
       const donations = await donationCollection
