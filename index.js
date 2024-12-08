@@ -68,6 +68,13 @@ async function run() {
       res.send(result);
     })
 
+    app.get("/users/:id", async (req,res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await campaignCollection.findOne(query);
+      res.send(result);
+    })
+
     app.get("/myCampaigns", async (req, res) => {
       const userEmail = req.query.email;
       const campaigns = await campaignCollection.find({ userEmail }).toArray();
@@ -80,7 +87,7 @@ async function run() {
       const result = await campaignCollection.findOne(query);
       res.send(result);
     })
-    
+
     app.get("/myDonations", async (req, res) => {
       const email = req.query.email;
       const donations = await donationCollection
