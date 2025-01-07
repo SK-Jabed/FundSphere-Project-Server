@@ -74,20 +74,6 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/myDonations", async (req, res) => {
-      const email = req.query.email;
-      const donations = await donationCollection
-        .find({ userEmail: email })
-        .toArray();
-      res.send(donations);
-    });
-
-    app.post("/donations", async (req, res) => {
-      const donationData = req.body;
-      const result = await donationCollection.insertOne(donationData);
-      res.send(result);
-    });
-
     app.delete("/campaigns/:id", async (req, res) => {
       const id = req.params.id;
       const result = await campaignCollection.deleteOne({
@@ -106,6 +92,21 @@ async function run() {
       res.send(result);
     });
 
+    // Donations Related API
+    app.get("/myDonations", async (req, res) => {
+      const email = req.query.email;
+      const donations = await donationCollection
+        .find({ userEmail: email })
+        .toArray();
+      res.send(donations);
+    });
+
+    app.post("/donations", async (req, res) => {
+      const donationData = req.body;
+      const result = await donationCollection.insertOne(donationData);
+      res.send(result);
+    });
+
     // User Related API
     app.get("/users", async (req, res) => {
       const cursor = userCollection.find();
@@ -119,7 +120,7 @@ async function run() {
       const result = await campaignCollection.findOne(query);
       res.send(result);
     });
-    
+
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
