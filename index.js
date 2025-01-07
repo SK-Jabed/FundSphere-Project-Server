@@ -50,30 +50,16 @@ async function run() {
 
     app.get("/campaign/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await campaignCollection.findOne(query);
       res.send(result);
-    })
+    });
 
     app.post("/campaigns", async (req, res) => {
       const newCampaign = req.body;
       const result = await campaignCollection.insertOne(newCampaign);
-      res.send(result)
+      res.send(result);
     });
-
-    // User Related API
-    app.get("/users", async (req, res) => {
-      const cursor = userCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    })
-
-    app.get("/users/:id", async (req,res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await campaignCollection.findOne(query);
-      res.send(result);
-    })
 
     app.get("/myCampaigns", async (req, res) => {
       const userEmail = req.query.email;
@@ -83,10 +69,10 @@ async function run() {
 
     app.get("/campaigns/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) };
       const result = await campaignCollection.findOne(query);
       res.send(result);
-    })
+    });
 
     app.get("/myDonations", async (req, res) => {
       const email = req.query.email;
@@ -94,52 +80,64 @@ async function run() {
         .find({ userEmail: email })
         .toArray();
       res.send(donations);
-    })
+    });
 
-    
     app.post("/donations", async (req, res) => {
       const donationData = req.body;
       const result = await donationCollection.insertOne(donationData);
       res.send(result);
-    })
-    
+    });
+
     app.delete("/campaigns/:id", async (req, res) => {
       const id = req.params.id;
       const result = await campaignCollection.deleteOne({
         _id: new ObjectId(id),
       });
       res.send(result);
-    })
-    
+    });
+
     app.patch("/campaigns/:id", async (req, res) => {
       const id = req.params.id;
       const updatedCampaign = req.body;
       const filter = { _id: new ObjectId(id) };
       const updateDoc = { $set: updatedCampaign };
-      
+
       const result = await campaignCollection.updateOne(filter, updateDoc);
       res.send(result);
-    })
+    });
 
-    // Users Related API
+    // User Related API
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await campaignCollection.findOne(query);
+      res.send(result);
+    });
+    
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
       res.send(result);
-    })
+    });
 
     app.patch("/users", async (req, res) => {
       const email = req.body.email;
       const filter = { email };
       const updatedDoc = {
         $set: {
-          lastSignInTime: req.body?.lastSignInTime
-        }
-      }
+          lastSignInTime: req.body?.lastSignInTime,
+        },
+      };
 
       const result = await userCollection.updateOne(filter, updatedDoc);
       res.send(result);
-    })
+    });
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
