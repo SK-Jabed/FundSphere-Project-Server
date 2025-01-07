@@ -96,18 +96,13 @@ async function run() {
       res.send(donations);
     })
 
-    app.post("/users", async (req, res) => {
-      const newUser = req.body;
-      const result = await userCollection.insertOne(newUser);
-      res.send(result);
-    })
-
+    
     app.post("/donations", async (req, res) => {
       const donationData = req.body;
       const result = await donationCollection.insertOne(donationData);
       res.send(result);
     })
-
+    
     app.delete("/campaigns/:id", async (req, res) => {
       const id = req.params.id;
       const result = await campaignCollection.deleteOne({
@@ -115,14 +110,21 @@ async function run() {
       });
       res.send(result);
     })
-
+    
     app.patch("/campaigns/:id", async (req, res) => {
       const id = req.params.id;
       const updatedCampaign = req.body;
       const filter = { _id: new ObjectId(id) };
       const updateDoc = { $set: updatedCampaign };
-
+      
       const result = await campaignCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    })
+
+    // Users Related API
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      const result = await userCollection.insertOne(newUser);
       res.send(result);
     })
 
